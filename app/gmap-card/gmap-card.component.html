@@ -1,0 +1,13 @@
+
+<div class="container-fluid">
+    <h2 mat-dialog-title class="border-bottom pb-4 mx-0">Event Venue</h2>
+    <div mat-dialog-content class="my-google-map">
+        <google-map width="500px" height="500px" [options]="mapOptions">
+           <map-marker [position]="data"></map-marker>
+        </google-map>
+     </div>
+
+     <div mat-dialog-actions>
+        <button class="bg-dark text-white mb-4 mt-2" mat-button (click)="onNoClick()">Close</button>
+     </div>
+</div>

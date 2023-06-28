@@ -1,0 +1,68 @@
+/* You can add global styles to this file, and also import other style files */
+*{
+    padding: 0 0;
+    margin: 0 0;
+}
+
+body{
+    background-image: url("/assets/background.jpg") !important;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    color: white;
+    font-family: 'Noto Sans JP', sans-serif;
+    margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.eventform{
+    background: rgba(255,255,255, 0.2);
+    backdrop-filter: blur(5px);
+}
+
+.mat-mdc-tab-label-container {
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+    z-index: 1;
+    background-color: #479989;
+}
+
+.mat-mdc-tab .mdc-tab__text-label {
+    display: inline-flex;
+    align-items: center;
+    color: #98c2b8;
+}
+
+.mat-h4, .mat-body-1, .mat-typography .mat-h4, .mat-typography .mat-body-1, .mat-typography h4 {
+    font: 400 16px/24px Roboto, sans-serif;
+    letter-spacing: .03125em;
+     margin: 0 0 0 0;
+}
+
+.mat-mdc-progress-spinner {
+    display: inline-flex;
+    overflow: hidden;
+    line-height: 0;
+}
+
+.listings {
+    overflow: hidden;
+    --bs-card-border-color: black;
+    --bs-card-border-radius: 1rem;
+    --bs-card-border-width: 0px;
+  }
+
+  .mat-mdc-tab:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label, .mat-mdc-tab-link:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label {
+    color: white;
+  }

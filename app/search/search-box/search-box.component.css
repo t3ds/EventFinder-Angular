@@ -1,0 +1,10 @@
+.formtitle{
+    border-bottom: 1px solid white;
+}
+
+form input:not(.loc-check), form select{
+    height: 2rem;
+}
+.loc-check{
+    height: 1rem;
+}

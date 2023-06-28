@@ -1,0 +1,17 @@
+.nav-list{
+    width: 100%;
+}
+
+.nav-list li{
+
+    --bs-nav-link-color: white;
+
+}
+.nav-list .nav-link.active {
+    border: 2px solid white;
+    --bs-nav-pills-link-active-bg: transparent;
+}
+
+.nav-link:focus, .nav-link:hover {
+    color: white;
+}

@@ -1,0 +1,14 @@
+<div class="container mb-4">
+    <app-container></app-container>
+    <app-search-box (tableFetchEvent) = "updateTableList($event)" (clearEvent) = "updateClear()"></app-search-box>
+
+    <ng-container *ngIf="!displayEvent; else eventCard">
+        <app-result-table *ngIf="searchTable != undefined" (eventCardEvent) = "updateEventShow($event)" [tableDetails] = "searchTable"></app-result-table>
+    </ng-container>
+    
+
+    <ng-template #eventCard>
+        <app-detail-card *ngIf="eventDetails" (backEvent) = "resetState($event)" [eventDetails] = "eventDetails"></app-detail-card>
+    </ng-template>
+
+</div>

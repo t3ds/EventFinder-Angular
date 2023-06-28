@@ -1,0 +1,33 @@
+.fav{
+    font-size: larger;
+}
+
+.showmore-cont{
+    font-size: 0.75rem;
+    line-height: 0.75rem;
+    overflow: hidden;
+    height: 1.5rem;
+}
+
+.showmore-height{
+    font-size: 0.75rem;
+}
+
+.show{
+    overflow: visible;
+    height: auto;
+}
+
+.pos-pop{
+    position: relative;
+}
+
+#edetails.row{
+    justify-content: center;
+    align-items: center;
+}
+
+#carouselExampleControls .row{
+    display: inline-flex;
+}
+

@@ -1,0 +1,70 @@
+<div class="container-fluid  col-12 col-sm-12 col-lg-5  rounded-4 mb-5 .text-white eventform" id="eventform">
+
+    <div class = "formtitle h3 py-4  mt-5 text-center" style="font-family: 'Times New Roman', Times, serif;">
+        Events Search
+    </div>
+    <form [formGroup]='eventform' (submit)="searchForm()" [noValidate]="false" id="esearch">
+
+        <div class="row">
+            <div class="col mt-3">
+                <label for="keyword">Keyword<span style="color: red">*</span></label><br>
+                <input type="text" class="col-12 rounded mb-3 px-2" id="keyword" [matAutocomplete]="auto" [formControl]='autokey' name = 'keyword' formControlName="keyword" required><br>
+                <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngIf="isLoading" class="is-loading">
+                        <mat-spinner [diameter]=30></mat-spinner>
+                    </mat-option>
+
+                    <ng-container *ngIf="!isLoading">
+                        <mat-option *ngFor="let s of suggestion" [value]="s.name">
+                            <span>{{s.name}}</span>
+                        </mat-option>
+                    </ng-container>
+                </mat-autocomplete>
+            </div>
+        </div>
+        
+        
+        <div class="row mb-3">
+            <div class="col-6">
+                <label for="dist">Distance(miles)</label><br>
+                <input class="col-12 rounded px-2" type="number" name="dist" id="dist" placeholder="10" formControlName="distance">
+            </div>
+
+            <div class="col-5">
+                <label for="category" id="categorylabel">Category<span style="color: red">*</span></label><br>
+                    <select class="col-12 rounded" name="category" id="category" formControlName="category">
+                        <option value="default">Default</option>
+                        <option value="music">Music</option>
+                        <option value="sports">Sports</option>
+                        <option value="arts">Arts</option>
+                        <option value="film">Film</option>
+                        <option value="miscellaneous">Miscellaneous</option>
+                    </select>
+            </div>
+
+        </div>
+        
+        
+        <div class="row">
+            <div class="col">
+                <label for="location">Location<span style="color: red">*</span></label><br>
+                <input class= "col-12 px-2 rounded mb-2" *ngIf= "showBox" type="text" name="location" formControlName="location" id="location" required><br>
+                <div class="form-check">
+                    <input class="loc-check form-check-input" type="checkbox" formControlName="autoloc" (change)="autodetect($event.target)" autocomplete="off" name="autod" id="autod">
+                    <label class="form-check-label" for="autod">Auto-Detect Location</label>
+                </div>
+
+
+                <!--onclick="searchClick(this)"-->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col mb-5 text-center">
+                <button class="text-white btn btn-danger p-2 me-2 " type="submit" id = "searchbut" >SUBMIT</button>
+                <button class="text-white btn btn-primary p-2 ms-2"  type="button" (click)="clearAll()">CLEAR</button>
+            </div>
+        </div>
+    </form>
+
+</div>

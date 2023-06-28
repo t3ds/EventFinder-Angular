@@ -1,0 +1,43 @@
+<div class="card listings mx-auto col-8 mt-5" *ngIf="events.length>0;else Default">
+    <div class="table-responsive">
+
+
+
+<table class="table table-hover table-light text-center">
+
+    <thead>
+        <tr class="fw-bolder">
+            <th class="col">#</th>
+            <th class="col">Date</th>
+            <th class="col">Event</th>
+            <th class="col">Category</th>
+            <th class="col">Venue</th>
+            <th class="col">Favourte</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr *ngFor="let item of events; index as i">
+            <td class="fw-bolder col">{{i+1}}</td>
+            <td class="col">{{item['0']}}</td>
+            <td class="col">{{item['1']}}</td>
+            <td class="col">{{item['2'].join(' | ')}}</td>
+            <td class="col">{{item['3']}}</td>
+            <td class="col"><a class="text-decoration-none" (click)="UpdateFavs(i)"><i class="bi bi-trash3" style="color: black;"></i></a></td>
+        </tr>
+    </tbody>
+
+</table>
+
+</div>
+</div>
+
+<ng-template #Default>
+    <!-- <table class="table text-danger rounded text-center">
+        No Favourite Events to show
+    </table> -->
+
+    <div class="container-fluid">
+        <app-default-component [data]="txt"></app-default-component>
+    </div>
+</ng-template>

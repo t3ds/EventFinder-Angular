@@ -1,0 +1,20 @@
+/* thead th:first-child {
+    border-top-left-radius: 9px;
+   }
+   
+   thead th:last-child {
+    border-top-right-radius: 9px;
+   }
+   
+   tbody tr:last-child :first-child {
+    border-bottom-left-radius: 9px;
+   }
+   
+   tbody tr:last-child :last-child {
+    border-bottom-right-radius: 9px;
+   } */
+
+   .listings{
+    --bs-card-bg: black
+   }
+

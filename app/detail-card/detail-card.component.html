@@ -1,0 +1,279 @@
+<div *ngIf="done" class="container-fluid col-12 col-sm-12 col-lg-8 eventform rounded-2 px-0">
+
+    <div class="py-2 ps-3 mb-4 text-decoration-underline">
+        <a [routerLink]="" (click)="goBack()"class="navbar-brand text-decoration-none"><i class="fa fa-sharp fa-solid fa-chevron-left"></i>Back</a>
+    </div>
+    <div class="text-center  mb-3 text-wrap" *ngIf="eventDetails?.name">
+        <span class="fav">{{eventDetails.name}}</span>
+        <button class="rounded-circle ms-3 px-2 py-1 btn btn-light" (click)="updateStatus()">
+            <ng-container *ngIf="!isFavourite;else fav">
+                <i class="fa fa-heart-o" aria-hidden="true"></i>
+            </ng-container>
+
+            <ng-template  #fav>
+                <i class="fa fa-heart" aria-hidden="true" style="color: red;"></i>
+            </ng-template>
+        </button>
+    </div>
+
+    <mat-tab-group class="detailTab" mat-align-tabs="center" mat-stretch-tabs = 'false'>
+
+        <mat-tab label="Events">
+            <div id = "edetails" class="row me-3 ms-2 mt-3">
+
+                <div class="col-12 col-sm-12 col-lg-5 text-center">
+
+                    <div class="my-3" *ngIf = "eventDetails?.dates?.start?.localDate || eventDetails?.dates?.start?.localTime">
+                        <span>Date</span><br><span class="showmore-cont">{{(eventDetails?.dates?.start?.localDate)?eventDetails.dates.start.localDate : ''}} {{(eventDetails?.dates?.start?.localTime)?eventDetails.dates.start.localTime : ''}}</span>
+                    </div>
+
+                    <div class="mb-3" *ngIf = "eventDetails?._embedded?.attractions">
+                        <span>Artist/Team</span><br><span class="showmore-cont">{{artistDisplay.join(" | ")}}</span>
+                    </div>
+
+                    <div class="mb-3" *ngIf = "eventDetails?._embedded?.venues && eventDetails?._embedded?.venues['0']?.name">
+                        <span>Venue</span><br><span class="showmore-cont">{{eventDetails._embedded.venues["0"].name}}</span>
+                    </div>
+
+                    <div class="mb-3" *ngIf = "eventDetails?.classifications">
+                        <span>Genre</span><br><span class="showmore-cont">{{genreInfo.join(" | ")}}</span>
+                    </div>
+
+                    <div class="mb-3" *ngIf = "eventDetails?.priceRanges">
+                        <span>Price Ranges</span><br><span class="showmore-cont">{{(eventDetails?.priceRanges[0]?.min)?eventDetails?.priceRanges[0]?.min : ''}} - {{(eventDetails?.priceRanges[0]?.max)?eventDetails?.priceRanges[0]?.max : ''}} {{eventDetails.priceRanges["0"].currency}}</span>
+                    </div>
+
+                    <div class="mb-3" *ngIf = "eventDetails?.dates?.status">
+                        <span class="d-inline mb-2">Ticket Status</span><br>
+                        <ng-container *ngIf="eventDetails.dates.status?.code == 'onsale'; else offsale">
+                            <div>
+                                <span class="d-inline label bg-success rounded  ms-1 me-1  px-1 py-1">
+                                    On Sale
+                                </span>
+                            </div>
+                        </ng-container>
+
+                        <ng-template  #offsale>
+                            <ng-container *ngIf="eventDetails.dates.status?.code == 'offsale'; else cancelled">
+                                <span  class="d-inline label bg-danger rounded  ms-1 me-1 px-1 py-1">
+                                    Off Sale
+                                </span>
+                            </ng-container>
+                        </ng-template>
+
+                        <ng-template #cancelled>
+                            <ng-container *ngIf="eventDetails.dates.status?.code == 'canceled'; else final">
+                                <span class="d-inline label bg-dark rounded  ms-1 me-1 px-1 py-1">
+                                    Canceled
+                                </span>
+                            </ng-container>
+                        </ng-template>
+
+                        <ng-template #final>
+                            <span  class="d-inline label bg-warning rounded mx-1 me-1 px-1 py-1">
+                                {{eventDetails.dates.status.code.charAt(0).toUpperCase() + eventDetails.dates.status.code.slice(1)}}
+                            </span>
+                        </ng-template>
+                    </div>
+
+                    <div *ngIf="eventDetails?.url">
+                        <span>Buy Tickets at:</span><br>
+                        <a class="text-decoration-none" [href]="eventDetails.url" target="_blank">Ticketmaster</a>
+                    </div>
+
+                </div>
+
+                <div class="col-12 col-sm-12 col-lg-7">
+                    <ng-container *ngIf="eventDetails?.seatmap?.staticUrl">
+                        <img [src]="eventDetails.seatmap.staticUrl" alt="" class="img-fluid mx-auto d-block">
+                    </ng-container>
+                    
+                </div>
+            </div>
+
+            <div class="mt-3 mb-3 text-center">
+                Share On: <a href="https://twitter.com/intent/tweet?text=Check {{eventDetails.name}} on &url={{eventDetails.url}}" target="_blank"><i class="fa fa-twitter fa-2x" style="color: #1DA1F2" aria-hidden="true"></i></a> <a href="https://www.facebook.com/sharer.php?u={{eventDetails.url}}" target="_blank"><i class="fa fa-facebook-official fa-2x" style="color: blue" aria-hidden="true"></i></a>
+            </div>
+        </mat-tab>
+        <mat-tab label="Artist/Teams">
+            <div id="carouselExampleControls" class="carousel slide text-center container-fluid mx-auto my-3 px-2" data-bs-ride="false" *ngIf="artistInfo.length>0;else defDisp">
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <div class="row w-75 text-center">
+                        <div class="col-12 col-sm-12 col-lg-3 rounded-circle">
+                            <div>
+                                <img class="img-fluid rounded-circle" [src]="artistInfo[0]?.images['0']?.url" alt="" width="150px"><br>
+                            </div>
+                            
+                            <h4>{{artistInfo[0].name}}</h4>
+                        </div> 
+                        
+                        <div class="col-12 col-sm-12 col-lg-3 mt-5 text-center d-flex align-items-center flex-column">
+                            <h4>Popularity</h4>
+                            <mat-progress-spinner [diameter]=40 *ngIf="artistInfo[0]?.popularity" [color]="color" [value]="artistInfo[0].popularity"></mat-progress-spinner>       
+                                <div style="position:relative; top: -30px; left: 0px;">{{artistInfo[0].popularity}}</div>
+                            
+                            <!-- <mat-progress-spinner [diameter]=30 *ngIf="artistInfo[0]?.popularity" [color]="color" [value]="artistInfo[0].popularity">
+                                
+                            </mat-progress-spinner> -->
+                            <!-- <br><span class="pos-pop showmore-cont">{{artistInfo[0].popularity}}</span> -->
+                        </div>
+
+                        <div class="col-12 col-sm-12 col-lg-3 mt-5">
+                            <h4>Followers</h4>
+                            <p *ngIf="artistInfo[0]?.followers?.total">{{artistInfo[0].followers.total.toLocaleString("en-US")}}</p>
+                        </div> 
+                        
+                        <div class="col-12 col-sm-12 col-lg-3 mt-5">
+                            <h4>Spotify Link</h4>
+                            <a *ngIf="artistInfo[0]?.external_urls?.spotify" [href]="artistInfo[0].external_urls.spotify" target="_blank"><i class="fa fa-spotify fa-2x" aria-hidden="true" style="color:green"></i></a>
+                        </div> 
+                    </div>
+                    
+                    <div class="d-flex align-items-center justify-content-center my-4">
+                        <div class="col-lg-8 d-flex align-items-start">
+                            <p>Albums feauting {{artistInfo[0].name}}</p>
+                    </div></div>
+                    <div class="row">
+                        <ng-container *ngIf="artistInfo[0]?.albums?.items">
+
+                            <div class="col-lg-4 col-12 col-sm-12 my-2" *ngFor="let album of artistInfo[0].albums.items">
+                                <img class="" *ngIf="album?.images['0']?.url" [src]="album.images['0'].url" alt="" style="width:170px;height:auto">
+                            </div>
+
+                        </ng-container>
+                    </div>
+
+                  </div>
+
+                  <ng-container *ngIf="artistInfo.length>1">
+
+                    <div class="carousel-item" *ngFor="let artist of artistInfo.slice(1);index as i">
+                        <div class="row w-75 text-center">
+                            <div class="col-12 col-sm-12 col-lg-3 rounded-circle">
+                                <div>
+                                    <img class="img-fluid rounded-circle" [src]="artist?.images['0']?.url" alt="" width="150px"><br>
+                                </div>
+                                
+                                <h4>{{artist.name}}</h4>
+                            </div> 
+                            
+                            <div class="col-12 col-sm-12 col-lg-3  text-center d-flex align-items-center flex-column">
+                                <h4>Popularity</h4>
+                                <mat-progress-spinner [diameter]=40 *ngIf="artist?.popularity" [color]="color" [value]="artist.popularity"></mat-progress-spinner>       
+                                    <div style="position:relative; top: -30px; left: 0px;">{{artist.popularity}}</div>
+                                
+                                <!-- <mat-progress-spinner [diameter]=30 *ngIf="artist?.popularity" [color]="color" [value]="artist.popularity">
+                                    
+                                </mat-progress-spinner> -->
+                                <!-- <br><span class="pos-pop showmore-cont">{{artist.popularity}}</span> -->
+                            </div>
+    
+                            <div class="col-12 col-sm-12 col-lg-3 ">
+                                <h4>Followers</h4>
+                                <p *ngIf="artist?.followers?.total">{{artist.followers.total.toLocaleString("en-US")}}</p>
+                            </div> 
+                            
+                            <div class="col-12 col-sm-12 col-lg-3 ">
+                                <h4>Spotify Link</h4>
+                                <a *ngIf="artist?.external_urls?.spotify" [href]="artist.external_urls.spotify" target="_blank"><i class="fa fa-spotify fa-2x" aria-hidden="true" style="color:green"></i></a>
+                            </div> 
+                        </div>
+                        
+                        <div class="d-flex align-items-center justify-content-center my-4">
+                            <div class="col-lg-8 d-flex align-items-start">
+                                <p>Albums feauting {{artist.name}}</p>
+                        </div></div>
+                        <div class="row">
+                            <ng-container *ngIf="artist?.albums?.items">
+    
+                                <div class="col-lg-4 col-12 col-sm-12 my-2" *ngFor="let album of artist.albums.items">
+                                    <img class="" *ngIf="album?.images['0']?.url" [src]="album.images['0'].url" alt="" style="width:170px;height:auto">
+                                </div>
+    
+                            </ng-container>
+                        </div>
+                    </div>
+
+                    <button type="button" class="carousel-control-prev" data-bs-target="#carouselExampleControls" role="button" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true" style="color: black;"></span>
+                        <span class="sr-only">Previous</span>
+                    </button>
+                        <button type="button" class="carousel-control-next" data-bs-target="#carouselExampleControls" role="button" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true" style="color: black;"></span>
+                        <span class="sr-only">Next</span>
+                        </button>
+
+                  </ng-container>
+                </div>
+            </div>
+
+            <ng-template #defDisp>
+                <div class="container-fluid my-5">
+                    <app-default-component [data]="txt"></app-default-component>
+                </div>
+            </ng-template>
+            
+              
+        </mat-tab>
+        <mat-tab class="text-center" label="Venue">
+            <div class="row mb-3 me-1 mb-4">
+                <div class="col-12 col-sm-12 col-lg-6 text-center">
+                    <div class="mb-2 mt-4"  *ngIf="VenueInfo?._embedded?.venues['0']?.name">
+                        <h4>Venue</h4>
+                        <span class="showmore-cont">{{VenueInfo._embedded.venues['0'].name}}</span>
+                    </div>
+
+                    <div class="mb-2" *ngIf="VenueInfo?._embedded?.venues['0']?.address?.line1 || VenueInfo?._embedded?.venues['0']?.city?.name || VenueInfo?._embedded?.venues['0']?.state?.name">
+                        <h4>Address</h4>
+                        <span class="showmore-cont">{{venueAdd.join(", ")}}</span>
+                    </div>
+
+                    <div class="mb-2" *ngIf="VenueInfo?._embedded?.venues['0']?.boxOfficeInfo?.phoneNumberDetail">
+                        <h4>Phone Number</h4>
+                        <span class="showmore-cont">{{VenueInfo._embedded.venues['0'].boxOfficeInfo.phoneNumberDetail}}</span>
+                    </div>
+
+                </div>
+
+                <!--code snippet derived from https://stackoverflow.com/questions/53372022/how-will-achive-content-show-more-and-show-less-in-angular-6-->
+                <div class="col-12 col-sm-12 col-lg-6 text-center">
+                    <div class="mb-2 mt-4" *ngIf="VenueInfo?._embedded?.venues['0']?.boxOfficeInfo?.openHoursDetail">
+                        <h4>Open Hours</h4>
+                        <div class="showmore-cont" [class.show]="ohShow">{{VenueInfo._embedded.venues['0'].boxOfficeInfo.openHoursDetail}}
+                        </div>
+                        <a class="showmore-height" style="text-decoration: underline;color: rgb(112,175,194);" (click)="ohShow = !ohShow">{{
+                            ohShow ? 'Show Less': "Show More"
+                        }}<i class="bi" [ngClass]="ohShow ? 'bi-chevron-up' : 'bi-chevron-down'"></i></a>
+                    </div>
+
+                    <div class="mb-2" *ngIf="VenueInfo?._embedded?.venues['0']?.generalInfo?.generalRule">
+                        <h4>General Rules</h4>
+                        <div class="showmore-cont" [class.show]="grShow">{{VenueInfo._embedded.venues['0'].generalInfo.generalRule}}
+                        </div>
+                        <a class="showmore-height" style="text-decoration: underline;color: rgb(112,175,194);" (click)="grShow = !grShow">{{
+                            grShow ? 'Show Less': "Show More"
+                        }}<i class="bi" [ngClass]="grShow ? 'bi-chevron-up' : 'bi-chevron-down'"></i></a>
+                    </div>
+
+                    <div class="mb-2" *ngIf="VenueInfo?._embedded?.venues['0']?.generalInfo?.childRule">
+                        <h4>Child Rules</h4>
+                        <div class="showmore-cont" [class.show]="crShow">{{VenueInfo._embedded.venues['0'].generalInfo.childRule}}
+                        </div>
+                        <a class="showmore-height" style="text-decoration: underline;color: rgb(112,175,194);" (click)="crShow = !crShow">{{
+                            crShow ? 'Show Less': "Show More"
+                        }}<i class="bi" [ngClass]="crShow ? 'bi-chevron-up' : 'bi-chevron-down'"></i></a>
+                    </div>
+                </div>
+            </div>
+
+                <div class="mt-3 mb-3 text-center">
+                    <button type="button" class="btn btn-danger mx-auto" (click)="openDialog()">Show Venue on Google Map</button>
+                </div>
+                
+        </mat-tab>
+
+    </mat-tab-group>
+    <br>
+
+</div>
