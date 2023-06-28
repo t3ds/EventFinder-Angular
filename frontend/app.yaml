@@ -1,0 +1,10 @@
+runtime: nodejs18
+service: default
+
+handlers:
+  - url: /(.*\..+)$
+    static_files: dist/hw8/\1
+    upload: dist/hw8/(.*\..+)$
+  - url: /.*
+    static_files: dist/hw8/index.html
+    upload: dist/hw8/index.html
